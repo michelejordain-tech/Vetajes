@@ -39,6 +39,15 @@ export default function ResultsPage() {
   const [modoEstudio, setModoEstudio] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [originalRequest, setOriginalRequest] = useState(null);
+  const [pdfDownload, setPdfDownload] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      if (pdfDownload?.url) {
+        window.URL.revokeObjectURL(pdfDownload.url);
+      }
+    };
+  }, [pdfDownload]);
 
   useEffect(() => {
     const storedResults = sessionStorage.getItem("vetEjesResults");
@@ -61,26 +70,23 @@ export default function ResultsPage() {
     
     setExporting(true);
     try {
+      if (pdfDownload?.url) {
+        window.URL.revokeObjectURL(pdfDownload.url);
+      }
+
       const response = await axios.post(`${API}/exportar-pdf`, originalRequest, {
         responseType: 'blob'
       });
       
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
-      
-      // Usar window.open como alternativa más segura
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `vetajes_analisis_${new Date().toISOString().slice(0,10)}.pdf`;
-      link.style.display = 'none';
-      link.click();
-      
-      // Limpiar URL después de un timeout
-      setTimeout(() => {
-        window.URL.revokeObjectURL(url);
-      }, 100);
-      
-      toast.success("PDF exportado correctamente");
+
+      setPdfDownload({
+        url,
+        fileName: `vetajes_analisis_${new Date().toISOString().slice(0, 10)}.pdf`
+      });
+
+      toast.success("PDF generado. Haz clic en 'Descargar PDF'.");
     } catch (error) {
       console.error("Error al exportar PDF:", error);
       toast.error("Error al generar el PDF");
@@ -285,6 +291,20 @@ export default function ResultsPage() {
                   )}
                   {exporting ? "Exportando..." : "Exportar PDF"}
                 </Button>
+
+                {pdfDownload?.url && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="border-green-200 text-green-700 hover:bg-green-50"
+                  >
+                    <a href={pdfDownload.url} download={pdfDownload.fileName} data-testid="download-pdf-btn">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Descargar PDF
+                    </a>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
