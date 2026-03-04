@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
-import { Button } from "./components/ui/button";
-import { Textarea } from "./components/ui/textarea";
-import { Input } from "./components/ui/input";
-import { Label } from "./components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
-import { Badge } from "./components/ui/badge";
-import { Switch } from "./components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./components/ui/collapsible";
+import { Button } from "../components/ui/button";
+import { Textarea } from "../components/ui/textarea";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Switch } from "../components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../components/ui/collapsible";
 import { 
   Dog, Cat, Stethoscope, Settings, Loader2, ArrowRight, 
   FlaskConical, ChevronDown, FileQuestion, Beaker
